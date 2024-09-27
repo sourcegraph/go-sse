@@ -241,9 +241,11 @@ func (c *Connection) Connect() error {
 	ctx := c.request.Context()
 	backoff := c.client.Backoff.new()
 
-	c.request.Header.Set("Accept", "text/event-stream")
-	c.request.Header.Set("Connection", "keep-alive")
-	c.request.Header.Set("Cache", "no-cache")
+	if len(c.request.Header) == 0 {
+		c.request.Header.Set("Accept", "text/event-stream")
+		c.request.Header.Set("Connection", "keep-alive")
+		c.request.Header.Set("Cache", "no-cache")
+	}
 
 	t := time.NewTimer(0)
 	defer t.Stop()
